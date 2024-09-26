@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rating System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+  /* Common styles for stars and FAQ */
+        .stars {
+            text-align: center;
+            width: 20rem;
+            padding: 30px;
+            border-radius: 20px;
+            background-color: lavender;
+        }
+
+        .stars h2,
+        p {
+            color: black;
+        }
+
+        .star {
+            cursor: pointer;
+            font-size: 40px;
+            margin-right: 10px;
+            color: black;
+        }
+
+        .selected {
+            color: gold;
+        }
+
+  /* BMI */
+        body {
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .container h1 {
+            text-align: center;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 4px;
+        }
+
+        button:hover {
+            background-color: black;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .result span {
+            font-weight: bold;
+        }
+
+  /*faq*/
+         .body {
+        font-family: Georgia, 'Times New Roman', Times, serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background-color: #eaadd5;
+            padding: 20px;
+        }
+        .faq-container {
+            width: 100%;
+            max-width: 800px;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(171, 199, 230, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .faq-item {
+            margin-bottom: 15px;
+        }
+        .faq-question {
+            font-weight: bold;
+            cursor: pointer;
+            background-color: lavender;
+            color: black;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .faq-answer {
+            display: none;
+            padding: 10px;
+            margin-top: 5px;
+            border-left: 3px solid blue;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+
+
+  /* Light and dark theme switch */
+        .switch {
+            font-size: 20px;
+            position: relative;
+            display: inline-block;
+            width: 4em;
+            height: 2em;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: #9fccfa;
+            border-radius: 50px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 2em;
+            width: 2em;
+            inset: 0;
+            background-color: white;
+            border-radius: 50px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .switch input:checked+.slider {
+            background: #0974f1;
+        }
+
+        .switch input:checked+.slider:before {
+            transform: translateX(1.6em);
+        }
+
+  
+        /* Dark theme styles for DL only */
+        .DL {
+            padding: 80px 100px;
+            width: 200px;
+            border-radius: 20px;
+            text-align: center;
+        }
+
+        .DL.dark-theme {
+            background-color: #333;
+            color: white;
+        }
+
+        .DL.dark-theme .slider {
+            background-color: #555;
+            /* Change slider color in dark theme */
+        }
+      
+    </style>
+</head>
+
+<body>
+    <div class="stars" id="ratingstars">
+        <h2>Dynamic Rating</h2>
+        <i class="bi bi-star-fill star"></i>
+        <i class="bi bi-star-fill star"></i>
+        <i class="bi bi-star-fill star"></i>
+        <i class="bi bi-star-fill star"></i>
+        <i class="bi bi-star-fill star"></i>
+        <p>Rating Score: <span id="ratingc">0</span> of 5</p>
+    </div>
+    <br><br>
+
+    <!-- BMI -->
+    <div class="container">
+        <h1>BMI Calculator</h1>
+        <label for="weight">Weight (kg):</label>
+        <input type="number" id="weight" placeholder="Enter your weight">
+
+        <label for="height">Height (cm):</label>
+        <input type="number" id="height" placeholder="Enter your height">
+
+        <button onclick="calculateBMI()">Calculate BMI</button>
+
+        <div class="result" id="bmiResult"></div>
+    </div>
+    <br><br>
+
+
+
+    <div class="faq-container"></div>
+    <h4>Frequently Asked Questions</h4>
+    
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(1)">What is HTML?</div>
+            <div class="faq-answer" id="answer-1">
+                HTML stands for HyperText Markup Language. It is the standard language for creating webpages and web applications.
+            </div>
+        </div>
+    
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(2)">What is CSS?</div>
+            <div class="faq-answer" id="answer-2">
+                CSS stands for Cascading Style Sheets. It describes how HTML elements are to be displayed on a screen, paper, or other media.
+            </div>
+        </div>
+    
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(3)">What is JavaScript?</div>
+            <div class="faq-answer" id="answer-3">
+                JavaScript is a programming language that allows you to implement complex features on web pages, such as interactive content.
+            </div>
+        </div>
+    
+    
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(6)">What is DOM in JavaScript?</div>
+            <div class="faq-answer" id="answer-6">
+                The DOM (Document Object Model) is a programming interface for web documents. It represents the structure of a web page, allowing JavaScript to access and manipulate HTML elements dynamically.
+            </div>
+        </div>
+    
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleAnswer(7)">How do you add elements to the DOM?</div>
+            <div class="faq-answer" id="answer-7">
+                You can add elements to the DOM in JavaScript using methods like <code>document.createElement()</code>, <code>appendChild()</code>, and <code>insertBefore()</code>. These methods allow you to dynamically create and insert elements into the webpage.
+            </div>
+        </div>
+    
+    </div>
+
+    
+
+    <h1>Dark and Light Theme</h1>
+    <div class="DL">
+        <label class="switch">
+            <input type="checkbox" id="themeToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+
+    <script>
+  // Rating System
+        const starchange = document.querySelectorAll('.star'); // Select stars by class
+        const ratingOutput = document.getElementById('ratingc');
+
+        starchange.forEach((star, index) => {
+            star.addEventListener('click', function () {
+                starchange.forEach((front, back) => {
+                    if (back <= index) {
+                        front.classList.add('selected'); // Highlight selected stars
+                    } else {
+                        front.classList.remove('selected'); // Remove highlight from unselected stars
+                    }
+                });
+                ratingOutput.textContent = index + 1;
+            });
+        });
+
+
+
+  // BMI
+        function calculateBMI() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100;
+
+            if (isNaN(weight) || isNaN(height)) {
+                document.getElementById('bmiResult').textContent = "Please enter valid numbers.";
+                return;
+            }
+
+            const bmi = (weight / (height * height)).toFixed(2);
+            document.getElementById('bmiResult').innerHTML = `Your BMI is ${bmi}`;
+        }
+  //faq
+        function toggleAnswer(id) {
+        const answer = document.getElementById(`answer-${id}`);
+        if (answer.style.display === "none" || answer.style.display === "") {
+            answer.style.display = "block";
+        } else {
+            answer.style.display = "none";
+        }
+    }
+
+
+  // Theme toggle system for DL div
+        const Toggle = document.getElementById('themeToggle');
+        const dlElement = document.querySelector('.DL');
+
+        Toggle.addEventListener('change', function () {
+            dlElement.classList.toggle('dark-theme');
+        });
+
+  
+    </script>
+</body>
+
+</html>
